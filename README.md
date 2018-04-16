@@ -124,7 +124,31 @@ app.module.ts
 - we nest other component to app-component.
 - So components in a webpage can be a seperate component for ( navbar, main content, side bar ). each component has its own html, business logic.
 - *Reuse same components* hence gets easier to build a website template.
+- @Component should either have template which containg html code directly in ts file OR templatUrl to show path to a HTML file.
+- Selector in component.ts works like a css selector
+
+```HTML
+  For Example:
+  selector : 'app-server'   ----> <app-server></app-server>
+  selector : '.app-server' works as a html class  ----> <div class='app-server' ></div>
+  selector : '[app-server]' works as a html attribute  ----> <div app-server ></div>
+```
+
+New Component Manually
+
+Create a new folder with html and ts file.
+ts file will contain an import to components and then the @component object stating path to html file in TemplateUrl, css file and a Selector to be used in the HTML files.
+update the app.module.ts file import the new component.ts file and add it to declarations.
+
+New Component Using CLI
+
+  `ng generate component COMPONENTNAME`
 
 ## Applications Built
 
 1. my-first-app
+2. the-basics
+
+## Assignments
+
+1. basics assignment 1
