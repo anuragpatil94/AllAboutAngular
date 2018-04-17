@@ -13,6 +13,8 @@ Angular is a JS framework changing the DOM ('HTML') at runtime!.
   - my-frist-app
 - [The Basics](#the-basics)
   - How Angular App gets loaded
+  - Components
+  - Data Binding
 - Components & Databinding
 - Directives
 - Services & Dependency Injection
@@ -118,7 +120,7 @@ app.module.ts
 
 - Here the bootstrap array lists all the components which should be know to angular when analyzing `index.html`. Here one of the component is `AppComponent` which refers to `app.component.ts`. Hence, now the circle closes.
 
-### Other Points
+### Components
 
 - app-component holds the entire application.
 - we nest other component to app-component.
@@ -143,6 +145,51 @@ update the app.module.ts file import the new component.ts file and add it to dec
 New Component Using CLI
 
   `ng generate component COMPONENTNAME`
+
+Get the List of Properties which can be used in Angular - 
+
+The MDN (Mozilla Developer Network) offers nice lists of all properties and events of the element you're interested in. Googling for `YOUR_ELEMENT properties  or YOUR_ELEMENT events`.
+
+### Data Binding
+
+Server to HTML -
+
+String Interpolation {{data}} - Use it to print some text
+
+Property Binding [property]="data" - When to change property
+
+HTML to SERVER (User Events) -
+Event Binding (event)= "expression"
+
+Two-way-Binding [(ngModel)] = "data"
+
+For this you need to add `import { FormsModule } from '@angular/forms';` and `FormsModule` in imports Object in app.module.ts as shown
+
+```TypeScript
+  import { BrowserModule } from '@angular/platform-browser';
+  import { NgModule } from '@angular/core';
+  import { FormsModule } from '@angular/forms'; // <=
+
+  import { AppComponent } from './app.component';
+  import { ServerComponent } from './server/server.component';
+  import { ServersComponent } from './servers/servers.component';
+
+
+  @NgModule({
+    declarations: [
+      AppComponent,
+      ServerComponent,
+      ServersComponent
+    ],
+    imports: [
+      BrowserModule,
+      FormsModule // <=
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
+  })
+  export class AppModule { }
+```
 
 ## Applications Built
 

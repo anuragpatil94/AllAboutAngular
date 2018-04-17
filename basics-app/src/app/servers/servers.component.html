@@ -1,5 +1,22 @@
-<app-server></app-server>
-<app-server></app-server>
-<p>
-  Servers Component
+<!-- String Interpolation {{data}} , 
+  Property Binding [property]="data",
+  Event Binding (event)= "expression"
+  $event is a reserved variable name. can use when using event binding 
+-->
+<label>Server Name</label>
+<!-- Event Binding -->
+<input type="text" class="form-control" (input)="onUpdateServerName($event)">
+<!-- Two way Binding - This will get as well as set the value -->
+<input type="text" class="form-control" [(ngModel)]="serverName">
+<p>{{serverName}}</p>
+<button class="btn btn-primary" [disabled]="!allowNewServer" (click)="onCreateServer()">Add Server</button>
+<!-- Here Both are doiing the same function of printing value of allowNewServer -->
+<!-- Property Binding, Here InnerText property is what inside the opening and closing tag-->
+<p>Using Property Binding :
+  <span [innerText]="allowNewServer"></span>
 </p>
+<!-- String Interpolation -->
+<p>Using String Interpolation : {{allowNewServer}}</p>
+<p> Result of Event Binding on Button: {{serverCreationStatus}}</p>
+<app-server></app-server>
+<app-server></app-server>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 // Decorator -  used to enhance classes
 @Component({
@@ -7,5 +7,15 @@ import { Component } from '@angular/core';
     styleUrls: ['./server.component.css']
 })
 // export to use it outside
-export class ServerComponent {
+export class ServerComponent implements OnInit {
+    serverId: number = 10;
+    serverStatus: String = 'offline';
+    constructor() { }
+    
+    getServerStatus(){
+        return this.serverStatus
+    }
+
+    ngOnInit() {
+    }
 }
