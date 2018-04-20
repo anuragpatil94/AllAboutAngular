@@ -6,27 +6,28 @@ Angular is a JS framework changing the DOM ('HTML') at runtime!.
 
 ## Structure
 
-- [Getting Started](#getting-started)
-  - Angular Versions
-  - Dependency Updates
-  - What is Typescript?
-  - my-frist-app
-- [The Basics](#the-basics)
-  - How Angular App gets loaded
-  - Components
-  - Data Binding
-- Components & Databinding
-- Directives
-- Services & Dependency Injection
-- Routing
-- Observables
-- Forms
-- Pipes
-- Http
-- Authentication
-- Optimizations & NgModules
-- Deployment
-- Animations & Testing
+* [Getting Started](#getting-started)
+  * Angular Versions
+  * Dependency Updates
+  * What is Typescript?
+  * my-frist-app
+* [The Basics](#the-basics)
+  * How Angular App gets loaded
+  * Components
+  * Data Binding
+  * Directives
+* Components & Databinding
+* Directives
+* Services & Dependency Injection
+* Routing
+* Observables
+* Forms
+* Pipes
+* Http
+* Authentication
+* Optimizations & NgModules
+* Deployment
+* Animations & Testing
 
 ---
 
@@ -34,11 +35,11 @@ Angular is a JS framework changing the DOM ('HTML') at runtime!.
 
 ### Angular Versions
 
-|  Angular.js verisons  |      Angular Versions       |
-| :-------------------: | :-------------------------: |
-|  Angular.js           |  Angular 2                  |
-|                       |  Angular 4                  |
-|                       |  `Angular 5(Latest)` &larr; |
+| Angular.js verisons |      Angular Versions      |
+| :-----------------: | :------------------------: |
+|     Angular.js      |         Angular 2          |
+|                     |         Angular 4          |
+|                     | `Angular 5(Latest)` &larr; |
 
 ### Dependency Updates
 
@@ -102,32 +103,32 @@ Running a Typescript code : `tsc FILENAME`
 
 ### How Angular App gets Loaded
 
-Since Angular is a single page application, `index.html` is the only html page which is loaded and body is loaded in `<app-root>`, where *app-root is a root component* of Angular.
+Since Angular is a single page application, `index.html` is the only html page which is loaded and body is loaded in `<app-root>`, where _app-root is a root component_ of Angular.
 
 app.component.ts in `src/app/` folder
 
-- contains a `selector: 'app-root'` poperty which is how html is replaced in `index.html` `<app-root>`
-- angular-cli injects some .js files (hence, not shown in index.js) to run the angular code.
-- URL to template and css which is then loaded to `index.html`
+* contains a `selector: 'app-root'` poperty which is how html is replaced in `index.html` `<app-root>`
+* angular-cli injects some .js files (hence, not shown in index.js) to run the angular code.
+* URL to template and css which is then loaded to `index.html`
 
 main.ts
 
-- is the 1st file which gets executed
-- Here we check if we are in production mode or development mode
-- From here it passes `AppModule` to a method, where `AppModule` which then refers to `app.module.ts` in `src/app/` folder.
+* is the 1st file which gets executed
+* Here we check if we are in production mode or development mode
+* From here it passes `AppModule` to a method, where `AppModule` which then refers to `app.module.ts` in `src/app/` folder.
 
 app.module.ts
 
-- Here the bootstrap array lists all the components which should be know to angular when analyzing `index.html`. Here one of the component is `AppComponent` which refers to `app.component.ts`. Hence, now the circle closes.
+* Here the bootstrap array lists all the components which should be know to angular when analyzing `index.html`. Here one of the component is `AppComponent` which refers to `app.component.ts`. Hence, now the circle closes.
 
 ### Components
 
-- app-component holds the entire application.
-- we nest other component to app-component.
-- So components in a webpage can be a seperate component for ( navbar, main content, side bar ). each component has its own html, business logic.
-- *Reuse same components* hence gets easier to build a website template.
-- @Component should either have template which containg html code directly in ts file OR templatUrl to show path to a HTML file.
-- Selector in component.ts works like a css selector
+* app-component holds the entire application.
+* we nest other component to app-component.
+* So components in a webpage can be a seperate component for ( navbar, main content, side bar ). each component has its own html, business logic.
+* _Reuse same components_ hence gets easier to build a website template.
+* @Component should either have template which containg html code directly in ts file OR templatUrl to show path to a HTML file.
+* Selector in component.ts works like a css selector
 
 ```HTML
   For Example:
@@ -144,11 +145,11 @@ update the app.module.ts file import the new component.ts file and add it to dec
 
 New Component Using CLI
 
-  `ng generate component COMPONENTNAME`
+`ng generate component COMPONENTNAME`
 
-Get the List of Properties which can be used in Angular - 
+Get the List of Properties which can be used in Angular -
 
-The MDN (Mozilla Developer Network) offers nice lists of all properties and events of the element you're interested in. Googling for `YOUR_ELEMENT properties  or YOUR_ELEMENT events`.
+The MDN (Mozilla Developer Network) offers nice lists of all properties and events of the element you're interested in. Googling for `YOUR_ELEMENT properties or YOUR_ELEMENT events`.
 
 ### Data Binding
 
@@ -191,6 +192,26 @@ For this you need to add `import { FormsModule } from '@angular/forms';` and `Fo
   export class AppModule { }
 ```
 
+### Directives
+
+* These are the Instructions in the DOM.
+* Components are a type of Directives.
+* *ngIf ngStyle ngFor
+
+```Typescript
+@Directive({
+  selector:'[appTurnGreen]'
+})
+
+export class TurnGreenDirective{
+}
+
+```
+
+```HTML
+<p appTurnGreen>Receives a green background!</p>
+```
+
 ## Applications Built
 
 1. my-first-app
@@ -199,3 +220,4 @@ For this you need to add `import { FormsModule } from '@angular/forms';` and `Fo
 ## Assignments
 
 1. basics assignment 1
+2. basics assignment 2

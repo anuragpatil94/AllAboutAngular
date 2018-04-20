@@ -18,5 +18,11 @@
 <!-- String Interpolation -->
 <p>Using String Interpolation : {{allowNewServer}}</p>
 <p> Result of Event Binding on Button: {{serverCreationStatus}}</p>
-<app-server></app-server>
-<app-server></app-server>
+
+<!-- Directive (structural)ngIf else-->
+<p *ngIf="serverCreated; else noServer">Server was Created, Server name is (Only after clicking button this line should show){{serverName}}</p>
+<ng-template #noServer>
+  <p>No Server was created!</p>
+</ng-template>
+<!-- getting the server through servers array -->
+<app-server *ngFor='let server of servers'></app-server>
