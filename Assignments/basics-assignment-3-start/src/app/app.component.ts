@@ -18,6 +18,6 @@ export class AppComponent {
     } else {
       this.password = "";
     }
-    this.buttonLogs.push(Date.now());
+    this.buttonLogs.push(Date());
   }
 }
