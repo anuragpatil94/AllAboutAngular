@@ -17,6 +17,7 @@ Angular is a JS framework changing the DOM ('HTML') at runtime!.
   * Data Binding
   * Directives
 * Components & Databinding
+  * 
 * Directives
 * Services & Dependency Injection
 * Routing
@@ -196,7 +197,7 @@ For this you need to add `import { FormsModule } from '@angular/forms';` and `Fo
 
 * These are the Instructions in the DOM.
 * Components are a type of Directives.
-* *ngIf ngStyle ngFor
+* *ngIf ngStyle *ngFor
 
 ```Typescript
 @Directive({
@@ -212,6 +213,10 @@ export class TurnGreenDirective{
 <p appTurnGreen>Receives a green background!</p>
 ```
 
+## Components and Databinding (Deep Dive)
+
+
+
 ## Applications Built
 
 1. my-first-app
@@ -221,3 +226,4 @@ export class TurnGreenDirective{
 
 1. basics assignment 1
 2. basics assignment 2
+3. basics assignment 3
