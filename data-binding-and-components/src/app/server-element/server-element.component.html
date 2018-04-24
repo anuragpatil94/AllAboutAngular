@@ -1,9 +1,12 @@
 <div class="panel panel-default">
   <div class="panel-heading">{{ element.name }}</div>
   <div class="panel-body">
+
+    <!-- <ng-content></ng-content> -->
+     <!--Add the following p tag to app.html then it works  -->
     <p>
       <strong *ngIf="element.type === 'server'" style="color: red">{{ element.content }}</strong>
-      <em *ngIf="element.type === 'blueprint'" style="color: blue">{{ element.content }}</em>
+      <em *ngIf="element.type === 'blueprint'">{{ element.content }}</em>
     </p>
   </div>
 </div>
