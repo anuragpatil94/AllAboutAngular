@@ -17,7 +17,7 @@ Angular is a JS framework changing the DOM ('HTML') at runtime!.
   * Data Binding
   * Directives
 * Components & Databinding
-  * 
+  * Custom Property Binding
 * Directives
 * Services & Dependency Injection
 * Routing
@@ -206,7 +206,6 @@ For this you need to add `import { FormsModule } from '@angular/forms';` and `Fo
 
 export class TurnGreenDirective{
 }
-
 ```
 
 ```HTML
@@ -215,15 +214,99 @@ export class TurnGreenDirective{
 
 ## Components and Databinding (Deep Dive)
 
+### Pass Data Between Components
 
+#### Custom Property
+
+`@Input('<alias>') <property_name>` to **_bind a element_** form outside (_Parent Component_ &rarr; _Child Component_)
+
+Here the **_data flow_** is from _Parent Component_ &rarr; _Child Component_. This **property-name or alias** can be used by the component which is implementing the Selector for that component. Here [property-name] is a **_CUSTOM PROPERTY_**
+
+For Example:
+
+```HTML
+<component-name [property-name or alias]='some_element in parent component'></component-name>
+```
+
+#### Custom Event
+
+`@Output('<alias>') property-name = new EventEmitter< { serverName: string; serverContent: string; } >();`
+
+The `@Output` Directive is used to emit collected data from child to parent component.
+
+Here the **_data flow_** is from _Child Component_ &rarr; _Parent Component_. Hence any changes occuring in the childComponent (component-name) will be available using `$event`. which can then be used in AppComponent. Here (property-name) is a **_CUSTOM EVENT_**
+
+For Example:
+
+```HTML
+<!-- (A property in child-component-name) = " A function in Parent Component " -->
+<child-component-name
+  (property-name)="onServerAdded($event)"
+  (blueprintCreated)="onBlueprintAdded($event)"
+  ></child-component-name>
+```
+
+### View Encapsulation
+
+In Angular styles defined are based on component to component. That means a style defiend in componentA is not applied to componentB. Although this can be changed using a directive called **encapsulation**.
+
+```typescript
+@Component({
+  selector: "app-server-element",
+  templateUrl: "./server-element.component.html",
+  styleUrls: ["./server-element.component.css"],
+  encapsulation: ViewEncapsulation.Emulated  <==
+})
+```
+
+1.  encapsulation: ViewEncapsulation.Emulated &rarr; Default View Encapsulation
+2.  encapsulation: ViewEncapsulation.None &rarr; The component which contains this, all the styles defiend in this component is applied **globally**. Unique angular selectors for styles in HTML is removed by this
+3.  encapsulation: ViewEncapsulation.Native &rarr; It uses Shadow DOM. Gives same results as Emulated but this is not supported by many browsers hence not used.
+
+### Ways to pass value to .ts file from .html file
+
+#### Local Reference -
+
+```HTML
+<input type="text" class="form-control" #serverContentInput>
+
+
+<button class="btn btn-primary" (click)="onAddServer(serverNameInput)">Add Server</button>
+```
+
+<!-- This is of type HTMLINPUTELEMENT after passing to the function-->
+
+contains all the properties of input. can be used only in template not in the typescript files. Passing #serverContentInput to the function will pass the whole input tag.
+
+#### Getting access before calling method -
+
+THis can be done by adding a local reference in the HTML tag
+
+```HTML
+<input type="text" class="form-control" #serverContentInput>
+```
+
+and then accessing it in .ts file using a decorator `@ViewChild`.
+
+```typescript
+@ViewChild("serverContentInput") serverContentInput : ElementRef;
+// This is of type ElementRef. Acceessing value nativeElement.value
+
+onAddServer(nameInput: HTMLInputElement) {
+    this.serverCreated.emit({
+      serverName: nameInput.value,
+      serverContent: this.serverContentInput.nativeElement.value
+    });
+  }
+```
 
 ## Applications Built
 
-1. my-first-app
-2. the-basics
+1.  my-first-app
+2.  the-basics
 
 ## Assignments
 
-1. basics assignment 1
-2. basics assignment 2
-3. basics assignment 3
+1.  basics assignment 1
+2.  basics assignment 2
+3.  basics assignment 3
