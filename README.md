@@ -310,9 +310,17 @@ onAddServer(nameInput: HTMLInputElement) {
 
 They are like attributes to the HTML tag. They work as a attribute to HTML tag, hence we cannot destroy the whole view. _Affects the element they are added to_.
 
+1. ngStyle
+2. ngClass
+
 #### Structure Directives
 
 They are same as attribute directives but also change the structure of DOM aound this element. Using ngIf the whole view can be removed. _Affects the view container_.
+
+1.  \*ngFor
+2.  \*ngIf
+
+> We cannot have more than 1 structural directives in an element.
 
 ## Applications Built
 
