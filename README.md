@@ -17,7 +17,9 @@ Angular is a JS framework changing the DOM ('HTML') at runtime!.
   * Data Binding
   * Directives
 * Components & Databinding
+  * Pass Data between Components
   * Custom Property Binding
+  * Custom Event
 * Directives
 * Services & Dependency Injection
 * Routing
@@ -300,6 +302,18 @@ onAddServer(nameInput: HTMLInputElement) {
   }
 ```
 
+## Directives (Deep Dive)
+
+### Types of Directives
+
+#### Attribute Directives
+
+They are like attributes to the HTML tag. They work as a attribute to HTML tag, hence we cannot destroy the whole view. _Affects the element they are added to_.
+
+#### Structure Directives
+
+They are same as attribute directives but also change the structure of DOM aound this element. Using ngIf the whole view can be removed. _Affects the view container_.
+
 ## Applications Built
 
 1.  my-first-app
@@ -310,3 +324,4 @@ onAddServer(nameInput: HTMLInputElement) {
 1.  basics assignment 1
 2.  basics assignment 2
 3.  basics assignment 3
+4.  data binding assignment 1
