@@ -304,6 +304,8 @@ onAddServer(nameInput: HTMLInputElement) {
 
 ## Directives (Deep Dive)
 
+**Command:** `ng generate directive <directive-name>` or `ng g d <directive-name>`
+
 ### Types of Directives
 
 #### Attribute Directives
@@ -318,21 +320,103 @@ They are like attributes to the HTML tag. They work as a attribute to HTML tag, 
 ```typescript
 // basic-highlight.directive.ts
 
-import { Directive, ElementRef, OnInit } from "@angular/core";
+import { Directive, Renderer2, OnInit, ElementRef } from "@angular/core";
 
 // [] for attribute style directive selector
 @Directive({
-  selector: "[appBasicHighlight]"
+  selector: "[appBetterHighlight]"
 })
-export class basicHighlightDirective implements OnInit {
-  constructor(private elementRef: ElementRef) {}
+export class BetterHighlightDirective implements OnInit {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
   ngOnInit() {
-    this.elementRef.nativeElement.style.backgroundColor = "green";
+    // flags - adding !important to overwrite another styles
+    this.renderer.setStyle(
+      this.elementRef.nativeElement,
+      "background-color",
+      "blue"
+    );
   }
 }
 
 //declare the Directive class to the app.module.ts
+```
+
+Using HostListner():
+
+```typescript
+ngOnInit() {  }
+  @HostListener("mouseenter")
+  mouseover(eventData: Event) {
+    this.renderer.setStyle(
+      this.elementRef.nativeElement,
+      "background-color",
+      "blue"
+    );
+  }
+  @HostListener("mouseleave")
+  mouseleave(eventData: Event) {
+    this.renderer.setStyle(
+      this.elementRef.nativeElement,
+      "background-color",
+      "transparent"
+    );
+  }
+```
+
+Using HostBinding():
+
+```typescript
+export class BetterHighlightDirective implements OnInit {
+  // Without using renderer
+  @HostBinding("style.backgroundColor") backgroundColor: string = "transparent";
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+
+  ngOnInit() {}
+
+  @HostListener("mouseenter")
+  mouseover(eventData: Event) {
+    this.backgroundColor = "blue";
+  }
+  @HostListener("mouseleave")
+  mouseleave(eventData: Event) {
+    this.backgroundColor = "transparent";
+  }
+}
+```
+
+Binding to Directive Properties: Dynamically setting values from outside.
+
+```typescript
+export class BetterHighlightDirective implements OnInit {
+  @Input() defaultColor: string = "transparent";
+  @Input() highlightColor: string = "blue";
+
+  // Without using renderer
+  @HostBinding("style.backgroundColor") backgroundColor: string;
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+
+  ngOnInit() {
+    this.backgroundColor = this.defaultColor; //This removes the bug that the default color being transparent. this line overwrite the default color to <given color in html>
+  }
+
+  @HostListener("mouseenter")
+  mouseover(eventData: Event) {
+    this.backgroundColor = this.highlightColor;
+  }
+  @HostListener("mouseleave")
+  mouseleave(eventData: Event) {
+    this.backgroundColor = this.defaultColor;
+  }
+}
+```
+
+```HTML
+<!-- [highlightColor]="'red'" ,<- IMP -->
+<p appBetterHighlight [defaultColor]="'yellow'" [highlightColor]="'red'">Style with better highlight</p>
+<!-- <p appBetterHighlight [defaultColor]="'yellow'" highlightColor="red">Style with better highlight</p>   Can be written like this (property binding) -->
 ```
 
 #### Structure Directives
