@@ -310,8 +310,30 @@ onAddServer(nameInput: HTMLInputElement) {
 
 They are like attributes to the HTML tag. They work as a attribute to HTML tag, hence we cannot destroy the whole view. _Affects the element they are added to_.
 
-1. ngStyle
-2. ngClass
+1.  ngStyle
+2.  ngClass
+
+##### Custom Directive
+
+```typescript
+// basic-highlight.directive.ts
+
+import { Directive, ElementRef, OnInit } from "@angular/core";
+
+// [] for attribute style directive selector
+@Directive({
+  selector: "[appBasicHighlight]"
+})
+export class basicHighlightDirective implements OnInit {
+  constructor(private elementRef: ElementRef) {}
+
+  ngOnInit() {
+    this.elementRef.nativeElement.style.backgroundColor = "green";
+  }
+}
+
+//declare the Directive class to the app.module.ts
+```
 
 #### Structure Directives
 
