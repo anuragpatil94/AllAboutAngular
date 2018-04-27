@@ -315,7 +315,7 @@ They are like attributes to the HTML tag. They work as a attribute to HTML tag, 
 1.  ngStyle
 2.  ngClass
 
-##### Custom Directive
+##### Custom Attribute Directive
 
 ```typescript
 // basic-highlight.directive.ts
@@ -421,10 +421,56 @@ export class BetterHighlightDirective implements OnInit {
 
 #### Structure Directives
 
-They are same as attribute directives but also change the structure of DOM aound this element. Using ngIf the whole view can be removed. _Affects the view container_.
+They are same as attribute directives but also change the structure of DOM aound this element. Using ngIf the whole view can be removed. _Affects the view container_. \* is used to make sure anguler know that it is a structural directive and also not needed to use `ng-template` everytime, when structural directives are needed.
+
+```HTML
+<div *ngIf="!onlyOdd">
+  <li *ngFor="let number of evenNumbers">
+    {{number}}
+  </li>
+</div>
+
+<!-- Either the above code or the following code (which is basically what * converts to behind the seen). Hence better to use *  -->
+<ng-template ngIf="!onlyOdd">
+<div>
+  <ng-template ngFor="let number of evenNumbers">
+  <li>
+    {{number}}
+  </li>
+  </ng-template>
+</div>
+</ng-template>
+```
+
+##### Custom Structural Directive
+
+```typescript
+@Directive({
+  selector: "[appUnless]"
+})
+export class UnlessDirective {
+  // This Directive will work opposite to "if"
+  // the property name here or the function name should be same as selector
+  @Input()
+  set appUnless(condition: boolean) {
+    if (!condition) {
+      //creates a view int the view container
+      this.vcRef.createEmbeddedView(this.templateRef);
+    } else {
+      this.vcRef.clear();
+    }
+  }
+
+  constructor(
+    private templateRef: TemplateRef<any>,
+    private vcRef: ViewContainerRef
+  ) {}
+}
+```
 
 1.  \*ngFor
 2.  \*ngIf
+3.  \*ngSwitch
 
 > We cannot have more than 1 structural directives in an element.
 
