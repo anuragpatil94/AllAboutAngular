@@ -1,18 +1,25 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-
+import { Component } from "@angular/core";
+import { LoggingService } from "../logging.service";
+import { AccountsService } from "../accounts.service";
 @Component({
-  selector: 'app-new-account',
-  templateUrl: './new-account.component.html',
-  styleUrls: ['./new-account.component.css']
+  selector: "app-new-account",
+  templateUrl: "./new-account.component.html",
+  styleUrls: ["./new-account.component.css"]
+  // providers: [LoggingService] // Provided in app.module.ts
 })
 export class NewAccountComponent {
-  @Output() accountAdded = new EventEmitter<{name: string, status: string}>();
+  constructor(
+    private loggingService: LoggingService,
+    private accountsService: AccountsService
+  ) {
+    //This is to get the emitted data from AccountComponent to newAccountComponent
+    this.accountsService.statusUpdated.subscribe((status: string) =>
+      alert("New Status: " + status)
+    );
+  }
 
   onCreateAccount(accountName: string, accountStatus: string) {
-    this.accountAdded.emit({
-      name: accountName,
-      status: accountStatus
-    });
-    console.log('A server status changed, new status: ' + accountStatus);
+    this.accountsService.addAccount(accountName, accountStatus);
+    // this.loggingService.logStatusChange(accountStatus); //Removed due at providing global service in app.module.ts, Hence, injecting LoggingService to AccountsService
   }
 }

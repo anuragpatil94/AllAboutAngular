@@ -474,6 +474,142 @@ export class UnlessDirective {
 
 > We cannot have more than 1 structural directives in an element.
 
+## Services
+
+With the use of service we can reduce the steps to exchange data (emit, catching of data in HTML using property-binding etc.[Check app.component.html, accounts.service.ts])
+
+A sample logging service:
+
+```typescript
+//logging.service.ts
+export class LoggingService {
+  logStatusChange(status: string) {
+    console.log("A server status changed, new status: " + status);
+  }
+}
+
+//account.component.ts
+import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { LoggingService } from "../logging.service";
+
+@Component({
+  providers: [LoggingService]
+})
+export class AccountComponent {
+  constructor(private loggingService: LoggingService) {}
+
+  onSetTo(status: string) {
+    this.loggingService.logStatusChange(status);
+  }
+}
+```
+
+### Hirarchical Injector
+
+AppModule - Same Instance of Service is available Application-wide. Hence it is not needed to put instance of service in the providers of child class.
+AppComponent - Same Instance of Service is available for all components. Hence it is not needed to put instance of service in the providers of child class.
+Any other Component - Same Instance of Service is available for the Component and all its child components.
+
+[EXAMPLE : DATASERVICE]
+
+### Cross-Component Communication through service using event-emitter
+
+An example of service within service and Cross-Component Communication
+
+```typescript
+// accounts.service.ts
+import { LoggingService } from "./logging.service";
+import { Injectable, EventEmitter } from "@angular/core";
+
+//This is added so that we can inject services to other service.
+//For Components since we used @Component to store metadata
+@Injectable()
+export class AccountsService {
+  accounts = [
+    {
+      name: "Master Account",
+      status: "active"
+    },
+    {
+      name: "Testaccount",
+      status: "inactive"
+    },
+    {
+      name: "Hidden Account",
+      status: "unknown"
+    }
+  ];
+
+  statusUpdated = new EventEmitter<string>();
+  constructor(private loggingService: LoggingService) {}
+
+  addAccount(name: string, status: string) {
+    this.accounts.push({ name: name, status: status });
+    this.loggingService.logStatusChange(status);
+  }
+
+  updateStatus(id: number, status: string) {
+    this.accounts[id].status = status;
+    this.loggingService.logStatusChange(status);
+  }
+}
+
+//app.module.ts
+@NgModule({
+  declarations: [AppComponent, AccountComponent, NewAccountComponent],
+  imports: [BrowserModule, FormsModule, HttpModule],
+  providers: [AccountsService, LoggingService],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+
+//account.component.ts
+@Component({
+  selector: "app-account",
+  templateUrl: "./account.component.html",
+  styleUrls: ["./account.component.css"]
+  // providers: [LoggingService] // Provided in app.module.ts
+})
+export class AccountComponent {
+  @Input() account: { name: string; status: string };
+  @Input() id: number;
+
+  constructor(
+    private loggingService: LoggingService,
+    private accountsService: AccountsService
+  ) {}
+
+  onSetTo(status: string) {
+    this.accountsService.updateStatus(this.id, status);
+    // Emitting a event setted up in service
+    this.accountsService.statusUpdated.emit(status);
+  }
+}
+
+//new-account.component.ts
+@Component({
+  selector: "app-new-account",
+  templateUrl: "./new-account.component.html",
+  styleUrls: ["./new-account.component.css"]
+  // providers: [LoggingService] // Provided in app.module.ts
+})
+export class NewAccountComponent {
+  constructor(
+    private loggingService: LoggingService,
+    private accountsService: AccountsService
+  ) {
+    //This is to get the emitted data from AccountComponent to newAccountComponent
+    this.accountsService.statusUpdated.subscribe((status: string) =>
+      alert("New Status: " + status)
+    );
+  }
+
+  onCreateAccount(accountName: string, accountStatus: string) {
+    this.accountsService.addAccount(accountName, accountStatus);
+  }
+}
+```
+
 ## Applications Built
 
 1.  my-first-app
