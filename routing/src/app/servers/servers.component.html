@@ -4,7 +4,10 @@
       <!-- <a [routerLink]="['/servers',5,'edit']" class="list-group-item" *ngFor="let server of servers">
         {{ server.name }}
       </a> -->
-      <a [routerLink]="['/servers',5,'edit']" [queryParams]="{allowEdit:'1'}" [fragment]="'loading'" class="list-group-item" *ngFor="let server of servers">
+      <!-- <a [routerLink]="['/servers',server.id]" [queryParams]="{allowEdit:'1'}" [fragment]="'loading'" class="list-group-item" *ngFor="let server of servers">
+        {{ server.name }}
+      </a> -->
+      <a [routerLink]="['/servers', server.id]" class="list-group-item" *ngFor="let server of servers">
         {{ server.name }}
       </a>
     </div>
@@ -13,6 +16,6 @@
     <button class="btn btn-primary" (click)="onReload()">Reload Page</button>
     <app-edit-server></app-edit-server>
     <hr>
-    <app-server></app-server>
+    <!-- <app-server></app-server> -->
   </div>
 </div>

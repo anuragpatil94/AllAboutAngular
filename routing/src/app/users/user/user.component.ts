@@ -15,10 +15,10 @@ export class UserComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     //['id'] this we get from what we named the param in the route. This will only work for the 1st time. If a new link is called from /id/name page to another /id/name then it won't update the page. Hence we use subscribe
-    this.user = {
-      id: this.route.snapshot.params["id"],
-      name: this.route.snapshot.params["name"]
-    };
+    // this.user = {
+    //   id: this.route.snapshot.params["id"],
+    //   name: this.route.snapshot.params["name"]
+    // };
     this.paramsSubscription = this.route.params.subscribe((params: Params) => {
       this.user = {
         id: params["id"],
