@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
 import { ServersService } from "../servers.service";
-import { ActivatedRoute, Params } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({
@@ -15,7 +15,8 @@ export class ServerComponent implements OnInit {
 
   constructor(
     private serversService: ServersService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -28,6 +29,14 @@ export class ServerComponent implements OnInit {
     });
   }
   ngOnDestroy() {
-    // this.paramsSubscription.unsubscribe();
+    this.paramsSubscription.unsubscribe();
+  }
+
+  onEdit() {
+    // queryParamsHandling: "preserve" is used to preserve the query params on navigating to another route.
+    this.router.navigate(["edit"], {
+      relativeTo: this.route,
+      queryParamsHandling: "preserve"
+    });
   }
 }

@@ -4,18 +4,21 @@
       <!-- <a [routerLink]="['/servers',5,'edit']" class="list-group-item" *ngFor="let server of servers">
         {{ server.name }}
       </a> -->
-      <!-- <a [routerLink]="['/servers',server.id]" [queryParams]="{allowEdit:'1'}" [fragment]="'loading'" class="list-group-item" *ngFor="let server of servers">
-        {{ server.name }}
-      </a> -->
-      <a [routerLink]="['/servers', server.id]" class="list-group-item" *ngFor="let server of servers">
+      <a [routerLink]="['/servers',server.id]" [queryParams]="{allowEdit: server.id===3?'1':'0'}" [fragment]="'loading'" class="list-group-item"
+        *ngFor="let server of servers">
         {{ server.name }}
       </a>
+      <!-- <a [routerLink]="['/servers', server.id]" class="list-group-item" *ngFor="let server of servers">
+        {{ server.name }}
+      </a> -->
     </div>
   </div>
   <div class="col-xs-12 col-sm-4">
-    <button class="btn btn-primary" (click)="onReload()">Reload Page</button>
+    <!-- This router outlet is for the chile routes -->
+    <router-outlet></router-outlet>
+    <!-- <button class="btn btn-primary" (click)="onReload()">Reload Page</button>
     <app-edit-server></app-edit-server>
     <hr>
-    <!-- <app-server></app-server> -->
+    <app-server></app-server> -->
   </div>
 </div>
