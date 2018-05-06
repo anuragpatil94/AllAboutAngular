@@ -36,8 +36,8 @@ export class EditServerComponent
       this.allowEdit = queryParams["allowEdit"] === "1" ? true : false;
     });
     this.route.fragment.subscribe();
-    const id = +this.route.snapshot.params["id"];
-    this.server = this.serversService.getServer(id);
+    // const id = +this.route.snapshot.params["id"];
+    // this.server = this.serversService.getServer(id);
     this.paramsSubscription = this.route.params.subscribe((params: Params) => {
       this.server = this.serversService.getServer(+params["id"]);
     });

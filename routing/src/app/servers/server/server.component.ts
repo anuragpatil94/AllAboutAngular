@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 
 import { ServersService } from "../servers.service";
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { ActivatedRoute, Params, Router, Data } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({
@@ -11,7 +11,7 @@ import { Subscription } from "rxjs/Subscription";
 })
 export class ServerComponent implements OnInit, OnDestroy {
   server: { id: number; name: string; status: string };
-  paramsSubscription: Subscription;
+  // paramsSubscription: Subscription;
 
   constructor(
     private serversService: ServersService,
@@ -20,16 +20,22 @@ export class ServerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.route.data.subscribe((data: Data) => {
+      // ["server"] should match the resolver initialized in  AppRouting
+      this.server = data["server"];
+    });
+
     // this.server = this.serversService.getServer(
     //   this.route.snapshot.params["id"]
     // );
-    this.paramsSubscription = this.route.params.subscribe((params: Params) => {
-      // + is alternative way for typecasting
-      this.server = this.serversService.getServer(+params["id"]);
-    });
+
+    // this.paramsSubscription = this.route.params.subscribe((params: Params) => {
+    //   // + is alternative way for typecasting
+    //   this.server = this.serversService.getServer(+params["id"]);
+    // });
   }
   ngOnDestroy() {
-    this.paramsSubscription.unsubscribe();
+    // this.paramsSubscription.unsubscribe();
   }
 
   onEdit() {
