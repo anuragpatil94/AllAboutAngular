@@ -1158,6 +1158,13 @@ So there is Observable then a stream of Events and then Observer (to handle data
 -> An Observable doesn't have to complete always.
 -> Used to handle Asynchronous Tasks.
 
+### Built-in Observables
+
+* subscribe
+* params
+
+### Custom Observables
+
 ---
 
 ## Applications Built
