@@ -1256,6 +1256,18 @@ Here `userActivated` in UserService acts as both Observable and Observer.
 
 * **subscibing** the **userActivated** makes it a ***Observer*** in AppComponent. whereas it is also used in UserComponent to create an Observable by using **userActivated.next(this.id)**
 
+### Observable Operators
+
+Operators allows to transform the data received to something else and still stay inside the Observables
+
+```ts
+  //map is a operator which maps the data into new observables with any transformation
+  //since operators return a new observables, it can chain to new operators
+  const myNumbers = Observable.interval(1000).map((data: number) => {
+    return data * 2;
+  });
+```
+
 ---
 
 ## Applications Built
