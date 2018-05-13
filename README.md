@@ -1165,6 +1165,54 @@ So there is Observable then a stream of Events and then Observer (to handle data
 
 ### Custom Observables
 
+```ts
+const myNumbers = Observable.interval(1000);
+    myNumbers.subscribe((number: number) => {
+      console.log(number);
+    });
+```
+
+```ts
+const myObservable = Observable.create((observer: Observer<string>) => {
+      setTimeout(() => {observer.next("first package");}, 2000);
+      setTimeout(() => {observer.next("second package");}, 4000);
+      setTimeout(() => {
+        // observer.error("Didnt Work");
+        observer.complete();
+      }, 5000);
+      setTimeout(() => {observer.next("third package");}, 6000);
+      setTimeout(() => {observer.next("fourth package");}, 3000);
+    });
+
+    myObservable.subscribe(
+      (data: string) => {console.log(data);},
+      (error: string) => {console.log(error);},
+      () => {console.log("completed");}
+    );
+
+  /* OUTPUT
+  (2sec)
+  first package
+  (1sec)
+  fourth package
+  (1sec)
+  third package
+  (1sec)
+  completed
+  */
+```
+
+subscribe will not stop even after changing a page unless unsubscribed.
+
+Run the code: Consider the 1st observable, where the number is incremented every 1 second. Now even if page is changed the number is still incremented (hence a memory leak). therefore Unsubscribe
+
+```ts
+ ngOnDestroy() {
+    this.numberObservableSubscription.unsubscribe();
+    this.customObservableSubscription.unsubscribe();
+  }
+```
+
 ---
 
 ## Applications Built
