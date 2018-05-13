@@ -1213,6 +1213,49 @@ Run the code: Consider the 1st observable, where the number is incremented every
   }
 ```
 
+### Using Rxjs Subject to pass and listen to data
+
+A subject is a Observer and Observable at the same time.
+
+```ts
+import { Subject } from "rxjs";
+
+export class UsersService {
+  userActivated = new Subject();
+}
+<!--  -->
+//User Component
+<!-- <button class="btn btn-primary" (click)="onActivate()">Activate!</button> -->
+onActivate() {
+    this.usersService.userActivated.next(this.id);
+}
+
+//AppComponent
+
+export class AppComponent implements OnInit {
+  user1Activated = false;
+  user2Activated = false;
+
+  constructor(private usersService: UsersService) {}
+  ngOnInit() {
+    this.usersService.userActivated.subscribe((id: number) => {
+      if (id === 1) {
+        this.user1Activated = true;
+      } else if (id === 2) {
+        this.user2Activated = true;
+      }
+    });
+  }
+}
+<!--  <a [routerLink]="['user', 1]">User 1 {{ user1Activated? '(activated)':'' }}</a>
+      <a [routerLink]="['user', 2]">User 2 {{ user2Activated? '(activated)':'' }}</a>
+ -->
+```
+
+Here `userActivated` in UserService acts as both Observable and Observer.
+
+* **subscibing** the **userActivated** makes it a ***Observer*** in AppComponent. whereas it is also used in UserComponent to create an Observable by using **userActivated.next(this.id)**
+
 ---
 
 ## Applications Built
