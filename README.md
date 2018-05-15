@@ -1268,6 +1268,18 @@ Operators allows to transform the data received to something else and still stay
   });
 ```
 
+## Forms
+
+There are 2 types of approaches to handle form: Template-Driven and Reactive
+
+### Template-Driven
+
+Angular infers the Form Object from the DOM
+
+### Reactive
+
+Form is created programmatically and Synchroniced with the DOM
+
 ---
 
 ## Applications Built
