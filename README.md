@@ -1276,6 +1276,137 @@ There are 2 types of approaches to handle form: Template-Driven and Reactive
 
 Angular infers the Form Object from the DOM
 
+```html
+<!-- This approach can be/to be used in many use cases -->
+<!-- name and ngModel are important properties to create the NgForm Object -->
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+  <div id="user-data">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" class="form-control" ngModel name="username">
+    </div>
+  </div>
+</form>
+```
+
+```ts
+export class AppComponent {
+  suggestUserName() {
+    const suggestedName = "Superuser";
+  }
+
+  onSubmit(form: NgForm) {
+    console.log(form);
+  }
+}
+```
+
+Using ViewChild:
+
+```html
+<form (ngSubmit)="onSubmit()" #f="ngForm">
+  <div id="user-data">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" class="form-control" ngModel name="username">
+    </div>
+  </div>
+</form>
+```
+
+```ts
+export class AppComponent {
+  @ViewChild("f") signupform: NgForm;
+  onSubmit() {
+    console.log(this.signupform);
+  }
+}
+```
+
+#### Validation
+
+```HTML
+<input type="text" id="username" class="form-control" ngModel name="username" required>
+<input type="email" id="email" class="form-control" ngModel name="email" required email>
+```
+
+Here *email*, *required* are the angular directives which will validate the user input. Here the benefits from Angular:
+
+* If the form element is invalid, the *valid property* in the *NgForm Object* is set to **FALSE**
+* If the form element is valid or invalid Angular sets new css classes. For example
+
+email: test  a css class is added to the `<input>` field called '`ng-invalid`'
+
+email: test@test.com a css class is added to the `<input>` field called '`ng-valid`'
+
+not just ng-valid/ng-invalid but many others css class such as `ng-touched`.
+
+```CSS
+input.ng-invalid,
+select.ng-invalid.ng-touched {
+  border: 1px solid red;
+  box-shadow: 0 0 1em 0 red;
+}
+```
+
+* we can also use the NgForm in the HTML to perform different boolean tasks. For Example:
+
+```HTML
+<form (ngSubmit)="onSubmit(f)" #f="ngForm">
+<!-- f.valid is the NgForm Object property -->
+<button class="btn btn-primary" type="submit" [disabled]="!f.valid">Submit</button>
+
+<!-- Manage State using NgModel (exposes some additional info on control) just like NgForm  -->
+<div>
+<input type="email" id="email" class="form-control" ngModel name="email" required email #email="ngModel">
+</div>
+<!-- email here is the local reference of <input> -->
+<span class="help-block" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+
+```
+
+#### Default Value
+
+ONEWAY BINDING
+
+```ts
+defaultQuestion = "pet";
+```
+
+```HTML
+<!-- used property binding [ngModel] -->
+<select id="secret" class="form-control" [ngModel]="defaultQuestion" name="secret">
+  <option value="pet">Your first Pet?</option>
+  <option value="teacher">Your first teacher?</option>
+</select>
+```
+
+TWOWAY BINDING
+
+```HTML
+<div class="form-group">
+  <textarea class="form-control" name="questionAnswer" id="" rows="3" [(ngModel)]="answer"></textarea>
+</div>
+<p>Your Reply: {{answer}}</p>
+```
+
+#### Grouping Form Controls
+
+```HTML
+<div id="user-data" ngModelGroup="userData">
+  <!-- Some Form with <input> -->
+</div>
+<!-- OUTPUT
+value:Object
+  questionAnswer:undefined
+  secret:"pet"
+  userData:
+    email:"test@test.com"
+    username:"Anurag"
+
+-->
+```
+
 ### Reactive
 
 Form is created programmatically and Synchroniced with the DOM
