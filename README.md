@@ -1270,6 +1270,8 @@ Operators allows to transform the data received to something else and still stay
 
 ## Forms
 
+In Angular Forms we don't explicitly use any HTTP request rather we let Angular handle the forms. So Angular instead creates a form object. This will help when certain form element need not be submitted (because if its a HTTP request everything inside the form gets submitted)
+
 There are 2 types of approaches to handle form: Template-Driven and Reactive
 
 ### Template-Driven
@@ -1278,6 +1280,7 @@ Angular infers the Form Object from the DOM
 
 ```html
 <!-- This approach can be/to be used in many use cases -->
+<!-- To control the required form element we add ngModel to that form element -->
 <!-- name and ngModel are important properties to create the NgForm Object -->
 <form (ngSubmit)="onSubmit(f)" #f="ngForm">
   <div id="user-data">
@@ -1300,6 +1303,15 @@ export class AppComponent {
   }
 }
 ```
+
+Some NgForm Object attributes
+
+* dirty : true - when a text input is filled
+* disabled : true - when the form element is disabled
+* invalid : false - when a form is valid (for validation)
+* valid : true - when a form is valid (for validation)
+* touched : true - when a form element is clicked before
+* untouched : true - when a form element is not clicked before
 
 Using ViewChild:
 
@@ -1332,14 +1344,16 @@ export class AppComponent {
 
 Here *email*, *required* are the angular directives which will validate the user input. Here the benefits from Angular:
 
+Angular dynamically adds some classes giving us information about the state of that form element.
+
 * If the form element is invalid, the *valid property* in the *NgForm Object* is set to **FALSE**
 * If the form element is valid or invalid Angular sets new css classes. For example
 
-email: test  a css class is added to the `<input>` field called '`ng-invalid`'
+**email: test**, a css class is added to the `<input>` field called '`ng-invalid`'
 
-email: test@test.com a css class is added to the `<input>` field called '`ng-valid`'
+**email: test@test.com**, a css class is added to the `<input>` field called '`ng-valid`'
 
-not just ng-valid/ng-invalid but many others css class such as `ng-touched`.
+not just ng-valid/ng-invalid but many others css class such as `ng-touched`, `ng-dirty`.
 
 ```CSS
 input.ng-invalid,
@@ -1348,6 +1362,8 @@ select.ng-invalid.ng-touched {
   box-shadow: 0 0 1em 0 red;
 }
 ```
+
+> We can also add HTML Validators using ngNativeValidate in the particular Form element
 
 * we can also use the NgForm in the HTML to perform different boolean tasks. For Example:
 
@@ -1405,6 +1421,82 @@ value:Object
     username:"Anurag"
 
 -->
+```
+
+#### Radio buttons
+
+```HTML
+<!-- genders = ["male", "female"]; -->
+<div class="radio" *ngFor="let gender of genders">
+  <label for="gender">
+    <input type="radio" name="gender" id="" [value]="gender" ngModel required>{{gender}}
+  </label>
+</div>
+```
+
+#### Update Form Value with javascript
+
+```HTML
+<div class="form-group">
+  <label for="username">Username</label>
+  <input type="text" id="username" class="form-control" name="username" ngModel required>
+</div>
+<button class="btn btn-default" type="button" (click)="suggestUserName()">Suggest an Username</button>
+```
+
+```ts
+suggestUserName() {
+    const suggestedName = "Superuser";
+    // This is not a best practice because it will overwrite to other elements as well
+    // this.signupform.setValue({
+    //   userData: {
+    //     username: suggestedName,
+    //     email: "",
+    //     gender: "male"
+    //   },
+    //   secret: "pet",
+    //   questionAnswer: ""
+    // });
+
+    // patchValue is used to change a part of the form object value.
+    this.signupform.form.patchValue({ userData: { username: suggestedName } });
+  }
+```
+
+#### Display Data
+
+```HTML
+<div class="row" *ngIf="submitted">
+  <div class="col-xs-12">
+    <h3>DATA: </h3>
+    <p>Username: {{user.username}}</p>
+    <p>email: {{user.email}}</p>
+    <p>gender: {{user.gender}}</p>
+    <p>Secret Question: {{user.secretQuestion}} </p>
+    <p>Answer: {{user.answer}}</p>
+  </div>
+</div>
+```
+
+```ts
+onSubmit() {
+  this.submitted = true;
+  console.log(this.signupform);
+  this.user.username = this.signupform.value.userData.username;
+  this.user.email = this.signupform.value.userData.email;
+  this.user.gender = this.signupform.value.userData.gender;
+  this.user.secretQuestion = this.signupform.value.secret;
+  this.user.answer = this.signupform.value.questionAnswer;
+}
+```
+
+#### Reset Form
+
+```ts
+onSubmit() {
+  // resets value as well as state
+    this.signupform.reset();
+}
 ```
 
 ### Reactive
